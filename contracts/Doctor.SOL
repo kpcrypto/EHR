@@ -1,0 +1,149 @@
+// SPDX-License-Identifier: MIT
+
+pragma solidity >=0.7.0 <0.9.0;
+//This is the doctors information for the portal 
+contract EHR {
+       struct Doctor {
+            uint id;
+            string name;
+            string qualification;
+            string workPlace;
+        }
+
+//This is the patient information for the portal
+        struct Patient {
+            uint id;
+            string name;
+            uint8 age;
+            string[] diseases;
+        }
+
+//This is the medicine information for the portal 
+        struct Medicine {
+            uint id;
+            string name;
+            string expiryDate;
+            string dose;
+            uint price;
+        }
+
+
+
+        mapping(uint => Doctor) doctors;
+        mapping(uint => Patient) patients;
+        mapping(uint => Medicine) medicines;
+        mapping(uint => uint[]) patientMedicines;
+
+
+        uint public doctorCount;
+        uint public patientCount;
+        uint public medicineCount;
+
+
+
+        function registerDoctor(string memory _name, string memory _qualification, string memory _workPlace) public {
+                doctorCount++;
+                doctors[doctorCount] = Doctor(doctorCount, _name, _qualification, _workPlace);
+        }
+
+
+        function viewDoctor(uint _doctorId) public view returns (uint, string memory, string memory, string memory) {
+                Doctor memory d = doctors[_doctorId];
+                return (d.id, d.name, d.qualification, d.workPlace);
+        }
+
+
+        function registerPatient(string memory _name, uint8 _age) public {
+                patientCount++;
+                patients[patientCount] = Patient(patientCount, _name, _age, new string[](0));
+        
+        
+        }
+
+
+        function updatePatientAge(uint _patientId, uint8 _newAge) public {
+                patients[_patientId].age = _newAge;
+        }
+
+
+        function addDisease(uint _patientId, string memory _disease) public {
+                patients[_patientId].diseases.push(_disease);
+        }
+
+
+        function viewPatient(uint _patientId) public view returns (uint, string memory, uint, string[] memory) {
+                Patient memory p = patients[_patientId];
+                return (p.id, p.name, p.age, p.diseases);
+        }
+
+
+        function viewPatientMedicines(uint _patientId) public view returns (uint[] memory) {
+                return patientMedicines[_patientId];
+        }
+
+
+        function addMedicine(string memory _name, string memory _expiryDate, string memory _dose, uint _price) public {
+                medicineCount++;
+                medicines[medicineCount] = Medicine(medicineCount, _name, _expiryDate, _dose, _price);
+        }
+
+
+        function prescribeMedicine(uint _patientId, uint _medicineId) public {
+                patientMedicines[_patientId].push(_medicineId);
+        }
+
+
+        function viewMedicine(uint _medicineId) public view returns (uint, string memory, string memory, string memory, uint) {
+                Medicine memory m = medicines[_medicineId];
+                return (m.id, m.name, m.expiryDate, m.dose, m.price);
+        }
+
+
+       
+
+
+
+
+
+
+
+}
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+} 
